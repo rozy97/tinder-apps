@@ -1,0 +1,27 @@
+version: '3'
+services:
+  krakend:
+    image: devopsfaith/krakend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api-gateway/krakend.json:/etc/krakend/krakend.json
+      - ./api-gateway/jwk_private_key.json:/jwk_private_key.json
+    networks:
+      - dealls
+  user-service:
+    build:
+      context: user-service
+      dockerfile: Dockerfile
+    environment:
+      - APP_PORT=5001
+    ports:
+      - 5001:5001
+    volumes:
+      - ./user-service:/app
+    networks:
+      - dealls
+
+networks:
+  dealls:
+    driver: bridge
