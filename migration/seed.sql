@@ -1,0 +1,17 @@
+INSERT INTO cities(id, name) VALUES
+(NULL, "Jakarta"),
+(NULL, "Bogor"),
+(NULL, "Tangerang"),
+(NULL, "Bekasi"),
+(NULL, "Depok"),
+(NULL, "Bandung"),
+(NULL, "Semarang"),
+(NULL, "Yogyakarta"),
+(NULL, "Surabaya"),
+(NULL, "Malang"),
+(NULL, "Medan"),
+(NULL, "Pekan Baru"),
+(NULL, "Padang"),
+(NULL, "Makassar"),
+(NULL, "Bali"),
+(NULL, "Jaya Pura");
