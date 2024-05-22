@@ -1,12 +1,25 @@
 version: '3'
 services:
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tinder_like_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./migration/schema.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./migration/seed.sql:/docker-entrypoint-initdb.d/2.sql"
+    networks:
+      - dealls
   krakend:
     image: devopsfaith/krakend
     ports:
       - "8080:8080"
     volumes:
       - ./api-gateway/krakend.json:/etc/krakend/krakend.json
-      - ./api-gateway/jwk_private_key.json:/jwk_private_key.json
+      - ./api-gateway/jwk_private_key.json:/etc/krakend/jwk_private_key.json
     networks:
       - dealls
   user-service:
@@ -15,8 +28,13 @@ services:
       dockerfile: Dockerfile
     environment:
       - APP_PORT=5001
+      - SECRET_PASSWORD=secret
+      - MYSQL_URI=root:root@(mysql:3306)/tinder_like_db?parseTime=true
+      - GIN_MODE=debug
     ports:
       - 5001:5001
+    depends_on:
+      - mysql
     volumes:
       - ./user-service:/app
     networks:
